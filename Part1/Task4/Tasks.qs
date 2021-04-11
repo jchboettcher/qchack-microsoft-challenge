@@ -74,7 +74,7 @@ namespace QCHack.Task4 {
         target : Qubit
     ) : Unit is Adj+Ctl {
         let arr = getTriangles(V,edges);
-        Message(arr)
+        Message(toString(arr))
     }
 }
 
