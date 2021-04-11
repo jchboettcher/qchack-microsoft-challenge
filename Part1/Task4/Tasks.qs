@@ -1,6 +1,7 @@
 namespace QCHack.Task4 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Arrays;
 
     // Task 4 (12 points). f(x) = 1 if the graph edge coloring is triangle-free
     // 
@@ -37,13 +38,43 @@ namespace QCHack.Task4 {
     // Hint: Remember that you can examine the inputs and the intermediary results of your computations
     //       using Message function for classical values and DumpMachine for quantum states.
     //
+    operation getTriangles (
+        V : Int, 
+        edges : (Int, Int)[]
+    ) : Int[][] is Adj+Ctl {
+        let e = Length(edges);
+        let arr = EmptyArray<Int[]>();
+        arr = Padded<Int[]>(e, EmptyArray<Int>(), arr);
+        for i in 0 .. (e-1) {
+            arr[i] = Padded<Int>(3, -1, arr[i]);
+        }
+        let counter = 0;
+        for i in 0 .. (V-1) {
+            for j in (i+1) .. (V-1) {
+                for k in (j+1) .. (V-1) {
+                    let e1 = (((i,j) in edges) or ((j,i) in edges));
+                    let e2 = (((i,k) in edges) or ((k,i) in edges));
+                    let e3 = (((j,k) in edges) or ((k,j) in edges));
+                    if (e1 and e2 and e3) {
+                        arr[counter][0] = i;
+                        arr[counter][1] = j;
+                        arr[counter][2] = k;
+                        counter = counter + 1;
+                    }
+                }
+            }
+        }
+        return arr;
+    }
+
     operation Task4_TriangleFreeColoringOracle (
         V : Int, 
         edges : (Int, Int)[], 
         colorsRegister : Qubit[], 
         target : Qubit
     ) : Unit is Adj+Ctl {
-        // ...
+        let arr = getTriangles(V,edges);
+        Message(arr)
     }
 }
 

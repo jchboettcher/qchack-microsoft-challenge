@@ -1,6 +1,7 @@
 namespace QCHack.Task2 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Arrays;
 
     // Task 2 (2 points). f(x) = 1 if at least two of three input bits are different - easy version
     //
@@ -19,7 +20,26 @@ namespace QCHack.Task2 {
     // will be 1/√3|001⟩ ⊗ |1⟩ + 1/√3|110⟩ ⊗ |1⟩ + 1/√3|111⟩ ⊗ |0⟩.
     //
     operation Task2_ValidTriangle (inputs : Qubit[], output : Qubit) : Unit is Adj+Ctl {
-        // ...
+        // ApplyControlledOnInt(0,X,inputs,output);
+        // ApplyControlledOnInt(1,X,inputs,output);
+        // use ancilla1 = Qubit();
+        // use ancilla2 = Qubit();
+        
+        ApplyControlledOnInt(0,X,inputs,output);
+        ApplyControlledOnInt(7,X,inputs,output);
+        X(output);
+
+        // X(ancilla1);
+        // X(ancilla2);
+
+        // ApplyAnd(ancilla1,ancilla2,output);
+
+        // X(ancilla1);
+        // X(ancilla2);
+
+        // ApplyControlledOnInt(0,X,inputs,ancilla1);
+        // ApplyControlledOnInt(7,X,inputs,ancilla2);
+
     }
 }
 
